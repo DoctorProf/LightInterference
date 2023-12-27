@@ -1,6 +1,8 @@
 module;
 #include <iostream>
 #include "SFML/Graphics.hpp"
+#include <ppl.h>
+
 import Cell;
 using namespace sf;
 export module Data;
@@ -35,9 +37,9 @@ namespace data
 	}
 	export void moveWave(std::vector<std::vector<Cell>>& grid)
 	{
-		for (int i = 0; i < grid.size(); i++)
+		Concurrency::parallel_for(0, (int)grid.size(), [&](int i)
 		{
-			for (int j = 0; j < grid[i].size(); j++) 
+			for (int j = 0; j < grid[i].size(); j++)
 			{
 				if (grid[i][j].getFixed()) continue;
 
@@ -51,15 +53,31 @@ namespace data
 				double difference = verticalPos - averageHeight;
 				grid[i][j].setVerticalSpeed(speedBlock - 0.1 * difference / massBlock);
 			}
-		}
+		});
+		Concurrency::parallel_for(0, (int)grid.size(), [&](int i)
+		{
+			for (int j = 0; j < grid[i].size(); j++)
+			{
+				if (grid[i][j].getFixed()) continue;
 
-		for (int i = 0; i < grid.size(); i++)
+				double speedBlock = grid[i][j].getVerticalSpeed();
+				double massBlock = grid[i][j].getMass();
+				double verticalPos = grid[i][j].getVerticalPosition();
+				double verticalPosRight = i + 1 < grid[i].size() ? grid[i + 1][j].getVerticalPosition() : grid[i][j].getVerticalPosition();
+				double verticalPosLeft = i - 1 > -1 ? grid[i - 1][j].getVerticalPosition() : grid[i][j].getVerticalPosition();
+
+				double averageHeight = (verticalPosLeft + verticalPosRight) / 2;
+				double difference = verticalPos - averageHeight;
+				grid[i][j].setVerticalSpeed(speedBlock - 0.1 * difference / massBlock);
+			}
+		});
+		Concurrency::parallel_for(0, (int)grid.size(), [&](int i)
 		{
 			for (int j = 0; j < grid[i].size(); j++)
 			{
 				grid[i][j].move();
 			}
-		}
+		});
 	}
 	export void clickWave(double x, double y, std::vector<std::vector<Cell>>& grid)
 	{

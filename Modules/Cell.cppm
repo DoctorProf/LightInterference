@@ -1,6 +1,7 @@
 module;
 #include <iostream>
 #include "SFML/Graphics.hpp"
+#include <algorithm>
 using namespace sf;
 export module Cell;
 
@@ -44,7 +45,8 @@ Cell::Cell(double width, double height, double x, double y, double mass)
 
 void Cell::draw(RenderWindow& window)
 {
-	double color = this->position > 0 ? 255 : 0;
+	double normalPos = this->position / 10;
+	double color = std::clamp((int)(normalPos * 255), 0, 255) ;
 	this->cell.setFillColor(this->fixed ? Color::Black : Color::Color(color, color, color));
 	window.draw(this->cell);
 }

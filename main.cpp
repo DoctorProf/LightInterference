@@ -6,7 +6,7 @@ using namespace sf;
 
 int main() 
 {
-    Vector2f sizeCell = Vector2f(40.0f, 40.0f);
+    Vector2f sizeCell = Vector2f(10.0f, 10.0f);
 
     RenderWindow win(VideoMode(1920, 1080), "LightInterference", sf::Style::Default); 
     win.setVerticalSyncEnabled(true);
