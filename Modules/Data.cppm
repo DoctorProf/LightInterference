@@ -23,6 +23,18 @@ namespace data
 				if ((i == 0 || i == height - 1) || (j == 0 || j == width - 1)) grid[i][j].setFixed(true);
 			}
 		}
+		for (int i = 0; i < grid.size() * 0.3; i++)
+		{
+			grid[i][40].setFixed(true);
+		}
+		for (int i = grid.size() * 0.4; i < grid.size() * 0.6; i++)
+		{
+			grid[i][40].setFixed(true);
+		}
+		for (int i = grid.size() * 0.7; i < grid.size(); i++)
+		{
+			grid[i][40].setFixed(true);
+		}
 		return grid;
 	}
 	export void drawGrid(std::vector<std::vector<Cell>>& grid, RenderWindow& win)
@@ -87,7 +99,7 @@ namespace data
 			{
 				if (grid[i][j].clickOnCell(x, y) && !grid[i][j].getFixed())
 				{
-					grid[i][j].setVerticalSpeed(10 / grid[i][j].getMass());
+					grid[i][j].setVerticalSpeed(100 / grid[i][j].getMass());
 					return;
 				}
 			}
