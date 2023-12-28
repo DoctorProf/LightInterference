@@ -8,13 +8,13 @@ int main()
 {
     Vector2f sizeCell = Vector2f(10.0f, 10.0f);
 
-    RenderWindow win(VideoMode(1920, 1080), "LightInterference", sf::Style::Default); 
+    RenderWindow win(VideoMode(1920, 1080), "LightInterference", sf::Style::Fullscreen); 
     win.setVerticalSyncEnabled(true);
 
     std::vector<std::vector<Cell>> grid = data::generateGrid(sizeCell, win);
 
     Clock logic;
-    Time timePerFrame = seconds(1.0f / 60.0f);
+    Time timePerFrame = seconds(1.0f / 2000.0f);
     Time accumulate = Time::Zero;
 
     while (win.isOpen())
@@ -22,7 +22,7 @@ int main()
         Event event;
         while (win.pollEvent(event))
         {
-            if (event.type == Event::Closed)
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)
             {
                 win.close();
             }

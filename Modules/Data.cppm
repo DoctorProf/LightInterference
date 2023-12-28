@@ -49,21 +49,22 @@ namespace data
 	}
 	export void moveWave(std::vector<std::vector<Cell>>& grid)
 	{
+		double dampingFactor = 0.999;
 		Concurrency::parallel_for(0, (int)grid.size(), [&](int i)
 		{
 			for (int j = 0; j < grid[i].size(); j++)
 			{
 				if (grid[i][j].getFixed()) continue;
 
-				double speedBlock = grid[i][j].getVerticalSpeed();
-				double massBlock = grid[i][j].getMass();
+				double speedCell = grid[i][j].getVerticalSpeed();
+				double massCell = grid[i][j].getMass();
 				double verticalPos = grid[i][j].getVerticalPosition();
 				double verticalPosRight = j + 1 < grid[i].size() ? grid[i][j + 1].getVerticalPosition() : grid[i][j].getVerticalPosition();
 				double verticalPosLeft = j - 1 > -1 ? grid[i][j - 1].getVerticalPosition() : grid[i][j].getVerticalPosition();
 
 				double averageHeight = (verticalPosLeft + verticalPosRight) / 2;
 				double difference = verticalPos - averageHeight;
-				grid[i][j].setVerticalSpeed(speedBlock - 0.1 * difference / massBlock);
+				grid[i][j].setVerticalSpeed(speedCell - 0.1 * difference / massCell);
 			}
 		});
 		Concurrency::parallel_for(0, (int)grid.size(), [&](int i)
@@ -72,21 +73,22 @@ namespace data
 			{
 				if (grid[i][j].getFixed()) continue;
 
-				double speedBlock = grid[i][j].getVerticalSpeed();
-				double massBlock = grid[i][j].getMass();
+				double speedCell = grid[i][j].getVerticalSpeed();
+				double massCell = grid[i][j].getMass();
 				double verticalPos = grid[i][j].getVerticalPosition();
 				double verticalPosRight = i + 1 < grid[i].size() ? grid[i + 1][j].getVerticalPosition() : grid[i][j].getVerticalPosition();
 				double verticalPosLeft = i - 1 > -1 ? grid[i - 1][j].getVerticalPosition() : grid[i][j].getVerticalPosition();
 
 				double averageHeight = (verticalPosLeft + verticalPosRight) / 2;
 				double difference = verticalPos - averageHeight;
-				grid[i][j].setVerticalSpeed(speedBlock - 0.1 * difference / massBlock);
+				grid[i][j].setVerticalSpeed(speedCell - 0.1 * difference / massCell);
 			}
 		});
 		Concurrency::parallel_for(0, (int)grid.size(), [&](int i)
 		{
 			for (int j = 0; j < grid[i].size(); j++)
 			{
+				grid[i][j].setVerticalSpeed(grid[i][j].getVerticalSpeed() * dampingFactor);
 				grid[i][j].move();
 			}
 		});
@@ -99,7 +101,7 @@ namespace data
 			{
 				if (grid[i][j].clickOnCell(x, y) && !grid[i][j].getFixed())
 				{
-					grid[i][j].setVerticalSpeed(100 / grid[i][j].getMass());
+					grid[i][j].setVerticalSpeed(10 / grid[i][j].getMass());
 					return;
 				}
 			}

@@ -9,6 +9,7 @@ export class Cell
 {
 private:
 	RectangleShape cell;
+
 	double position;
 	double verticalSpeed;
 	double mass;
@@ -41,14 +42,15 @@ Cell::Cell(double width, double height, double x, double y, double mass)
 	this->mass = mass;
 	this->fixed = false;
 	this->position = 0;
+	
 }
 
 void Cell::draw(RenderWindow& window)
 {
-	double normalPos = this->position / 10;
-	double color = std::clamp((int)(normalPos * 255), 0, 255) ;
-	this->cell.setFillColor(this->fixed ? Color::Red : Color::Color(color, color, color));
-	window.draw(this->cell);
+	double normalPos = this->position / 5;
+	double color = std::clamp((int)(normalPos * 255), 0, 255);
+	cell.setFillColor(fixed ? Color::Red : Color::Color(color, color, color));
+	window.draw(cell);
 }
 void Cell::move()
 {
@@ -80,10 +82,10 @@ void Cell::setMass(double mass)
 }
 bool Cell::clickOnCell(double x, double y)
 {
-	double cellkPosX = this->cell.getPosition().x;
-	double cellPosY = this->cell.getPosition().y;
-	return (x > cellkPosX && x < cellkPosX + this->cell.getSize().x) &&
-		(y > cellPosY && y < cellPosY + this->cell.getSize().y);
+	double cellkPosX = cell.getPosition().x;
+	double cellPosY = cell.getPosition().y;
+	return (x > cellkPosX && x < cellkPosX + cell.getSize().x) &&
+		(y > cellPosY && y < cellPosY + cell.getSize().y);
 }
 void Cell::setFixed(bool fixed)
 {
