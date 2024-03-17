@@ -47,7 +47,7 @@ Cell::Cell(double width, double height, double x, double y, double mass)
 
 void Cell::draw(RenderWindow& window)
 {
-	double normalPos = this->position / 5;
+	double normalPos = this->position / 2;
 	double color = std::clamp((int)(normalPos * 255), 0, 255);
 	cell.setFillColor(fixed ? Color::Red : Color::Color(color, color, color));
 	window.draw(cell);

@@ -14,7 +14,7 @@ int main()
     std::vector<std::vector<Cell>> grid = data::generateGrid(sizeCell, win);
 
     Clock logic;
-    Time timePerFrame = seconds(1.0f / 2000.0f);
+    Time timePerFrame = seconds(1.0f / 1000.0f);
     Time accumulate = Time::Zero;
 
     while (win.isOpen())

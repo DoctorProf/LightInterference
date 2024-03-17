@@ -49,7 +49,7 @@ namespace data
 	}
 	export void moveWave(std::vector<std::vector<Cell>>& grid)
 	{
-		double dampingFactor = 0.999;
+		double dampingFactor = 0.9985;
 		Concurrency::parallel_for(0, (int)grid.size(), [&](int i)
 		{
 			for (int j = 0; j < grid[i].size(); j++)
